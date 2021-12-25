@@ -96,6 +96,7 @@ const controller = {
           userPassword,
           fullName,
           mobileNumber,
+          isAdmin,
           forgetPasswordOTP,
         } = getUserDetails[0];
         const decrypt = await decryptPassword(password, userPassword);
@@ -108,6 +109,7 @@ const controller = {
               name: fullName,
               email: emailAddress,
               mobile: mobileNumber,
+              isAdmin: isAdmin,
             },
             token: token,
           });
@@ -183,7 +185,7 @@ const controller = {
    * @returns
    */
 
-  resetPassword: async (req, res) => {
+  resetPasswordMobile: async (req, res) => {
     try {
       const { mobileNumber, otp, password, conformPassword } = req.body.info;
       if (!password || !conformPassword) {
@@ -237,6 +239,11 @@ const controller = {
         message: "Something went wrong",
       });
     }
+  },
+
+  getDashboard: async (req, res) => {
+    const { token } = req.body.info;
+    res.status(200).send(token);
   },
 };
 
