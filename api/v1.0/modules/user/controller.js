@@ -1,5 +1,6 @@
 const util = require("util");
 const con = require("../../../../config/database");
+const message = require("../../../../constants/messages");
 const query = util.promisify(con.query).bind(con);
 const {
   encryptPassword,
@@ -24,9 +25,9 @@ const controller = {
         req.body.info;
 
       if (!fullName || !emailAddress || !userPassword) {
-        return res.status(401).json({
+        return res.status(400).json({
           success: false,
-          message: "Required Name Email and Password",
+          message: message.require,
         });
       }
 
@@ -35,8 +36,8 @@ const controller = {
 
       if (getDetails.length > 0) {
         return res.status(400).json({
-          success: true,
-          message: "User already registered with this email",
+          success: false,
+          message: message.duplicateEmail,
         });
       }
 
@@ -52,14 +53,14 @@ const controller = {
         const token = await generateAuthToken(emailAddress);
         return res.status(200).json({
           success: true,
-          message: "User Registered Successfully",
+          message: message.register,
           token: token,
         });
       }
     } catch (error) {
-      res.status(500).json({
+      res.status(401).json({
         success: false,
-        message: "Something went wrong",
+        message: message.tryCatch,
       });
     }
   },
@@ -72,26 +73,28 @@ const controller = {
    */
 
   loginUser: async (req, res) => {
+    console.log("Login user", req.body.info);
     try {
       const { emailAddress, password } = req.body.info;
 
       if (!emailAddress || !password) {
-        return res.status(401).json({
+        return res.status(400).json({
           success: false,
-          message: "Required email and password",
+          message: message.require,
         });
       }
       const sqlQuerySelect = `SELECT * FROM ms_users WHERE emailAddress= ?`;
       const getUserDetails = await query(sqlQuerySelect, [emailAddress]);
       if (getUserDetails.length == 0) {
         return res.status(400).json({
-          success: true,
-          message: "User not Registered",
+          success: false,
+          message: message.noUser,
         });
       }
 
       if (getUserDetails.length > 0) {
         const {
+          id,
           emailAddress,
           userPassword,
           fullName,
@@ -100,12 +103,14 @@ const controller = {
           forgetPasswordOTP,
         } = getUserDetails[0];
         const decrypt = await decryptPassword(password, userPassword);
+        console.log("Check Decrypt", decrypt);
         if (decrypt) {
           const token = await generateAuthToken(emailAddress);
           res.status(200).json({
             success: true,
-            message: "User login successfully",
+            message: message.login,
             userDetails: {
+              userId: id,
               name: fullName,
               email: emailAddress,
               mobile: mobileNumber,
@@ -114,18 +119,17 @@ const controller = {
             token: token,
           });
         } else {
-          res.status(401).json({
+          res.status(400).json({
             success: false,
-            message: "Email or Password does not matched",
+            message: message.incorrect,
           });
         }
-        res.status(200).send("ok");
       }
     } catch (error) {
       console.log(error);
-      res.status(500).json({
+      res.status(401).json({
         success: false,
-        message: "Something went wrong",
+        message: message.tryCatch,
       });
     }
   },

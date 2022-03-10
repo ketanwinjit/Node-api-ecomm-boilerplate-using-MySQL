@@ -1,0 +1,42 @@
+const message = {
+  invalidToken: "Invalid Token",
+  tokenMissing: "Authorization Token Missing",
+  dbError: "Unable to process your request, please try again",
+  sessionExpired: "Session expires. Please login again",
+  success: "Success",
+  badRequest: "Bad Request, request is made with invalid arguments",
+  forbidden: "Access to the requested URL is forbidden",
+  tryCatch: "Something went wrong. Please contact admin.",
+  duplicateEmail: "This email is already registered",
+  invalidLoginDetails: "Invalid login details",
+  invalidEmail: "Invalid email address",
+  invalidPassword: "You entered incorrect password",
+  accountDisable:
+    "Please contact admin. Your account has been deleted or blocked!",
+  noData: "No data available",
+  artistSignUpEmailSubject: "Artist Membership Request Received!",
+  collectorSignUpEmailSubject: "Collector Membership Request Received!",
+  signUp:
+    "Thank you for submitting details. We have added your email to the sign-up queue and will get back to you shortly",
+  login: "You have successfully logged in",
+  setProfile: "Thank you for registering",
+  forgotPassword:
+    "An email with reset password link has been sent to your email address",
+  resetPasswordEmailSubject: "Reset Password",
+  resetPassword: "You have successfully reset your password",
+  changePassword: "You have successfully changed your password",
+  invalidOldPassword: "Your entered old password is incorrect",
+  invalidOldAndNewPassword: "Your new password cannot be same as old password",
+  userEmailAlreadyAssigned: "This email is already assigned to another user",
+  rejectUserEmailSubject: "Membership Request",
+  duplicateEthWalletAddress: "This wallet address is already registered",
+  submitUser: "User details updated successfully",
+  deleteUserProfilePic: "Profile picture deleted successfully",
+  deleteUserCoverPic: "Cover picture deleted successfully",
+  require: "Email and Password Required",
+  register: "User Registered Successfully ",
+  noUser: "No user found with this email",
+  incorrect: "You have entered incorrect details",
+};
+
+module.exports = message;
